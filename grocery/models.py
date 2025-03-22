@@ -31,6 +31,7 @@ class Extra(models.Model):
     
 class Constant(models.Model):
     name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=0)
     amount = models.FloatField()
     rate = models.FloatField()
 
