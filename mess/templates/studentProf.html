@@ -1,11 +1,27 @@
 {% extends "base.html" %}
-{% block title %} <title>StudentProfile</title> {% endblock %}
+{% block title %} <title>Student Profile</title> {% endblock %}
 {% block body %}
 
     {% include "components/navbar.html" %}
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Welcome to Student Profile Page</h1>
+
+    <div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
+        <div class="container text-white p-5 rounded" style="background: #f1e9d2; color: black !important; max-width: 800px;">
+            <h1 class="text-center" style="color: black;">User Information</h1>
+            <div class="row">
+                <div class="col-md-5 ">
+                    <img src="/static/images/images-removebg-preview.png " class="p-0 m-0" alt="Logo" style="height: 200px;"> 
+                    <h3>Urvashi Kshatriya</h3>
+                </div>
+
+                <div class="col-md-7 mt-5 align-items-center">
+                    <h5><strong>Branch</strong> - IOT</h5>
+                    <h5><strong>Sch. No.</strong>  - 32765</h5>
+                    <h5><strong>Room No.</strong>- F2</h5>
+                    <h5><strong>Year</strong> - 3rd year</h5>
+                    <h5><strong>Blood Type</strong> - A+</h5>
+                </div>
+                
+            </div>
             
         </div>
     </div>
