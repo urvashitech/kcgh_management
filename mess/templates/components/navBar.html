@@ -14,11 +14,11 @@
       </ul>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         
-        <button type="button" class="btn btn-success active" data-bs-toggle="button">Home</button>
+        <button type="button" class="btn btn-success active" data-bs-toggle="button"><a class="nav-link" href="">Home</a></button>
 
-        <button type="button" class="btn btn-outline-success">Mess Bill</button>
-        <button type="button" class="btn btn-outline-success">Complaints</button>
-        <button type="button" class="btn btn-outline-success">Staff</button>
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'messbill' %}">Mess Bill</a></button>
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'complain' %}">Complaints</a></button>
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'staffInfo' %}">Staff</a></button>
         <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#loginModal">
             Login
         </button>          

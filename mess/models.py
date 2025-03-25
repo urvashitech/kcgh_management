@@ -8,7 +8,7 @@ class MessBill (models.Model):
     category = models.CharField(max_length=15)
     branch = models.CharField(max_length=15)
     year = models.IntegerField()
-    number_of_days = models.IntegerField()
+    number_of_days = models.IntegerField(default=10)
     total_amount = models.IntegerField()
     dues = models.IntegerField(default= 0)
 
