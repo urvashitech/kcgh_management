@@ -2,7 +2,7 @@
 from django.urls import path , include
 from mess import views
 urlpatterns = [
-    path("", views.landing_page, name="home"),
+    path("", views.home, name="home"),
     path("messbill", views.messbill, name="messbill"),
     path("personalInfo", views.personalInfo, name="personalInfo"),
     path("staffInfo", views.staffInfo, name="staffInfo"),
