@@ -12,6 +12,39 @@
         }
     </style>
     
+    <a href="{% url 'login' %}"></a>
+
+    <div class="row">
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+    
+                    <div class="modal-body">
+                        <!-- Login Form -->
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+    
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+    
+                            <button type="submit" class="btn btn-dark">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <div class="container mt-5">
         <h2 class="text-center mb-0 bg-dark text-white p-3 rounded">Staff Information</h2>
     
