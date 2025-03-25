@@ -1,7 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class MessBill (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     s_no = models.IntegerField()
     name = models.CharField(max_length=50)
     sch_no = models.IntegerField()
@@ -13,7 +16,10 @@ class MessBill (models.Model):
     dues = models.IntegerField(default= 0)
 
  
-
+    def save(self, *args, **kwargs):
+        if MessBill.objects.filter(user=self.user).exists() and not self.pk:
+            raise ValidationError("A MessBill for this user already exists.")
+        super().save(*args, **kwargs)
     @property
     def display_year(self):
         """Returns 'Final' for 4th-year students, otherwise returns year number."""
