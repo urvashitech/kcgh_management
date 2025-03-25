@@ -1,13 +1,76 @@
 {% extends "base.html" %}
 {% block title %} <title>Staff Information</title> {% endblock %}
+{% load static%}
 {% block body %}
 
     {% include "components/navbar.html" %}
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Welcome to Staff Information Page</h1>
-            
-        </div>
+
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+    
+    <div class="container mt-5">
+        <h2 class="text-center mb-0 bg-dark text-white p-3 rounded">Staff Information</h2>
+    
+        <table class="table table-bordered table-striped" class="table table-dark table-hover" >
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 10%;">S.No.</th>
+                    <th>Name</th>
+                    <th>Post</th>
+                    <th>Contact Number</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>1.</td> 
+                    <td>Prof. Dr. Shilpi Tomar</td>
+                    <td>Warden</td>
+                    <td>9229444033</td>
+                </tr>
+
+                <tr>
+                    <td>2.</td> 
+                    <td>Smt. Ritu Raghuwanshi</td>
+                    <td>Matron</td>
+                    <td>9755295409</td>
+                </tr>
+
+                <tr>
+                    <td>3.</td> 
+                    <td>Manoj Pawar</td>
+                    <td>Peon</td>
+                    <td>8962733323</td>
+                </tr>
+
+                <tr>
+                    <td>4.</td> 
+                    <td>Poonam Raikwar</td>
+                    <td>Peon</td>
+                    <td>9039248527</td>
+                </tr>
+
+                <tr>
+                    <td>5.</td> 
+                    <td>Laxmi Kushwah</td>
+                    <td>Peon</td>
+                    <td>7879554975</td>
+                </tr>
+
+                <tr>
+                    <td>6.</td> 
+                    <td>Monika Valmiki</td>
+                    <td>Cleaner</td>
+                    <td>8963517002</td>
+                </tr>
+
+                
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}
