@@ -18,9 +18,16 @@
 
         <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'complain' %}">Complaints</a></button>
         <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'staffInfo' %}">Staff</a></button>
+
+        {% if user.is_authenticated%}
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'messbill' %}">Mess Bill</a></button>
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'personalInfo' %}">Personal Information</a></button>
+        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'handleLogOut' %}">Logout</a></button>
+        {% else %}
         <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#loginModal">
             Login
-        </button>          
+        </button> 
+        {% endif %}         
       
       </div>
   </div>

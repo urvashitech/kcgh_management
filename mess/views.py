@@ -38,7 +38,10 @@ def handleLogin(request):
 
     return render(request, "home.html")
 
-
+def handleLogOut(request):
+    logout(request)
+    messages.success(request, "Successfully Logged Out")
+    return redirect("home")
 
 def personalInfo(request):
     return render(request, "personalInfo.html")
