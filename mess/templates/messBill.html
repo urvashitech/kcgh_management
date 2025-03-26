@@ -16,7 +16,7 @@
 <div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
     <div class="container text-white p-5 rounded"
         style="background: #f1e9d2; color: black !important; max-width: 800px;">
-        <h1 class="text-center" style="color: black;">Mess Bill- Urvashi Kshatriya</h1>
+        <h1 class="text-center" style="color: black;">Mess Bill- {{user.name}}</h1>
         <div class="row mt-3">
             <div class="col-md-5 ">
                 <img src="/static/images/images-removebg-preview.png " class="p-0 m-0 " alt="Logo"
@@ -27,42 +27,42 @@
             <div class="col-md-7 mt-5 align-items-center">
                 <div class="my-2">
                     <strong>Name - </strong>
-                    <p class="d-inline">Urvashi Kshatriya</p>
+                    <p class="d-inline">{{user.name}}</p>
                 </div>
 
                 <div class="my-2">
                     <strong>Sch. No. - </strong>
-                    <p class="d-inline">32765</p>
+                    <p class="d-inline">{{user.sch_no}}</p>
                 </div>
 
                 <div class="my-2">
                     <strong>Category - </strong>
-                    <p class="d-inline">General</p>
+                    <p class="d-inline">{{user.category}}</p>
                 </div>
 
                 <div class="my-2">
                     <strong>Branch - </strong>
-                    <p class="d-inline">IOT</p>
+                    <p class="d-inline">{{user.branch}}</p>
                 </div>
 
                 <div class="my-2">
                     <strong>Year - </strong>
-                    <p class="d-inline">3rd year</p>
+                    <p class="d-inline">{{user.year}}rd year</p>
                 </div>
                 
                 <div class="my-2">
                     <strong>No. of Days - </strong>
-                    <p class="d-inline">28</p>
+                    <p class="d-inline">{{user.number_of_days}}</p>
                 </div>
                 
                 <div class="my-2">
                     <strong>Amount - </strong>
-                    <p class="d-inline">1612</p>
+                    <p class="d-inline">{{user.total_amount}}</p>
                 </div>
                 
                 <div class="my-2">
                     <strong>Dues - </strong>
-                    <p class="d-inline">No Dues</p>
+                    <p class="d-inline">{{user.dues}}</p>
                 </div>
             </div>
 
