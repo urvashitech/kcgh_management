@@ -18,23 +18,36 @@
             <div class="row">
                 <div class="col-md-5 ">
                     <img src="/static/images/images-removebg-preview.png " class="p-0 m-0" alt="Logo" style="height: 200px;"> 
-                    <h3>Urvashi Kshatriya</h3>
+                    <h3>{{user.name}}</h3>
                 </div>
 
                 <div class="col-md-7 mt-5 align-items-center">
-                    <h5><strong>Branch</strong> - IOT</h5>
-                    <h5><strong>Sch. No.</strong>  - 32765</h5>
-                    <h5><strong>Room No.</strong>- F2</h5>
-                    <h5><strong>Year</strong> - 3rd year</h5>
-                    <h5><strong>Blood Type</strong> - A+</h5>
-                    <h5><strong>Category</strong> - General</h5>
-                    <h5><strong>Contact Info</strong> - 0000000000</h5>
-                    <h5><strong>Father's Name</strong> - Tarun Bahadur</h5>
-                    <h5><strong>Father's Contact</strong> - 0000000000</h5>
-                    <h5><strong>Mother's Name</strong> - Laxmi Kshatriya</h5>
-                    <h5><strong>Mother's Contact</strong> - 0000000000</h5>
-                    <h5><strong>Address</strong> - LIGL-1, Geetanjili Colony, Chhindwara</h5>
-                    <h5><strong>Existing Diseases</strong> - None</h5>
+                    <h5><strong>Branch</strong> - {{user.branch}}</h5>
+                    <h5><strong>Sch. No.</strong>  - {{user.sch_no}}</h5>
+                    <h5><strong>Room No.</strong>- {{user.branch}}</h5>
+                    <h5><strong>Year</strong> - {{user.year}} year</h5>
+                    <h5><strong>Category</strong> - {{user.category}}</h5>
+                    <h5><strong>Date Of Birth</strong> - {{user.dob}}</h5>
+                    <h5><strong>Blood Type</strong> - {{user.blood_group}}</h5>
+                    <h5><strong>Student Email </strong> - {{user.email}}</h5>
+                    <h5><strong>Address</strong> - {{user.address}}</h5>
+                    <h5><strong>Student Contact</strong> - +91{{user.phone}}</h5>
+
+                    <h5><strong>Guardian's Name</strong> -{{user.g_name}}</h5>
+                    <h5><strong>Guardian's occupation</strong> -{{user.g_occupation}}</h5>
+                    <h5><strong>Guardian's Office Address</strong> -{{user.g_address}}</h5>
+                    <h5><strong>Guardian's Contact</strong> -{{user.g_no}}</h5>
+                    <h5><strong>Guardian's Email</strong> -{{user.g_email}}</h5>
+                    <h5><strong>Emergency Contact</strong> -{{user.e_no}}</h5>
+
+                    <h5><strong>Local Guardian's Name</strong> -{{user.l_name}}</h5>
+                    <h5><strong>Local Guardian's Contact</strong> -{{user.l_no}}</h5>
+                    <h5><strong>Local Guardian's Address</strong> -{{user.l_address}}</h5>
+                    <h5><strong>Local Guardian's Email</strong> -{{user.l_email}}</h5>
+                    
+                    
+                    <h5><strong>Existing Diseases</strong> - {{user.branch}}</h5>
+                    
                 </div>
                 
             </div>

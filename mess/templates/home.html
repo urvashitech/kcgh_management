@@ -3,48 +3,48 @@
 {% load static %}
 {% block body %}
 
-    {% include "components/navbar.html" %}
+{% include "components/navbar.html" %}
 
-    <style>
-        body {
-            background: url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
-    </style>
+<style>
+    body {
+        background: url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
 
-    <a href="{% url 'login' %}"></a>
+<a href="{% url 'login' %}"></a>
 
-    <div class="row">
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-    
-                    <div class="modal-body">
-                        <!-- Login Form -->
-                        
-                        <form method="POST" action="{% url 'handleLogin' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
-                            </div>
-    
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-    
-                            <button type="submit" class="btn btn-dark">Login</button>
-                        </form>
-                    </div>
+<div class="row">
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    
+                    <form method="POST" action="{% url 'handleLogin' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark">Login</button>
+                    </form>
                 </div>
             </div>
         </div>
-
     </div>
+
+</div>
 
 {% endblock %}

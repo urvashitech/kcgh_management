@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from mess.models import MessBill
+from users.models import User as CustomUser
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def home(request):
@@ -43,8 +44,15 @@ def handleLogOut(request):
     messages.success(request, "Successfully Logged Out")
     return redirect("home")
 
+@login_required
 def personalInfo(request):
-    return render(request, "personalInfo.html")
+    user_info = CustomUser.objects.filter(username=request.user.username).first()  # ✅ Corrected Query
+    if user_info is None:
+        messages.error(request, "User data not found")
+        return redirect("home")  # Redirect to home if user data is missing
+
+    return render(request, "personalInfo.html", {"user": user_info})  # ✅ Pass actual user instance
+
 
 def staffInfo(request):
     return render(request, "staffInfo.html")
