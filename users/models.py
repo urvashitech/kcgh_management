@@ -19,10 +19,10 @@ class User(models.Model):
     g_occupation = models.CharField(max_length=100)
     g_address = models.CharField(max_length=100)
     e_no = models.IntegerField(max_length=10)
-    l_name = models.CharField(max_length=100, null=True, blank=True)
-    l_address = models.CharField(max_length=100, null=True, blank=True)
-    l_no = models.IntegerField(max_length=10, null=True, blank=True)
-    disease = models.CharField(max_length=100, null=True, blank=True)
+    l_name = models.CharField(max_length=100)
+    l_address = models.CharField(max_length=100)
+    l_no = models.IntegerField(max_length=10)
+    disease = models.CharField(max_length=100)
 
 
     def __str__(self):
