@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} <title>Student Profile</title> {% endblock %}
+{% load static %}
+{% block body %}
+
+    {% include "components/navbar.html" %}
+
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+
+    <div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
+        <div class="container text-white p-5 rounded" style="background: #f1e9d2; color: black !important; max-width: 800px;">
+            <h1 class="text-center" style="color: black;">User Information</h1>
+            <div class="row">
+                <div class="col-md-5 ">
+                    <img src="/static/images/images-removebg-preview.png " class="p-0 m-0" alt="Logo" style="height: 200px;"> 
+                </div>
+
+                <div class="col-md-7 mt-5 align-items-center">
+                    <h1 class="text-center">404 Not Found</h1>
+                    <p>Oops! The page you're looking for can't be found.</p>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-outline-success"><a class="nav-link" href="{% url 'home' %}">Go Back To Home</a></button>
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+
+{% endblock %}
+
+    

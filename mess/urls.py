@@ -10,4 +10,5 @@ urlpatterns = [
     path("staffInfo", views.staffInfo, name="staffInfo"),
     path("studentInfo", views.studentInfo, name="studentInfo"),
     path("complain", views.complain, name="complain"), 
+    path("manage_db",views.manage_db, name="manage_db"),
 ]
