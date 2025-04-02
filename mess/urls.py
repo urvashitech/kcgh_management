@@ -11,4 +11,8 @@ urlpatterns = [
     path("studentInfo", views.studentInfo, name="studentInfo"),
     path("complain", views.complain, name="complain"), 
     path("manage_db",views.manage_db, name="manage_db"),
+    path("edit",views.edit_page,name='edit'),
+    path('calMessBill',views.calMessBill,name='calMessBill'),
+    path('editMessBill',views.editMessBill,name='editMessBill'),
+    path("personalInfoForm",views.personalInfoForm, name="personalInfoForm"),
 ]

@@ -101,4 +101,16 @@ def manage_db(request):
         return render(request, "manage_db.html" , {"role": request.user.username})
     else:
         return render(request, "404.html")
-    
+
+
+def edit_page(request):
+    return render(request,'edit.html')
+
+def calMessBill(request):
+    return render(request,'calMessBill.html')
+
+def editMessBill(request):
+    return render(request,'messBillForm.html')
+
+def personalInfoForm(request):
+    return render(request,'personalInfoForm.html')
