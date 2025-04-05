@@ -15,4 +15,9 @@ urlpatterns = [
     path('calMessBill',views.calMessBill,name='calMessBill'),
     path('editMessBill',views.editMessBill,name='editMessBill'),
     path("personalInfoForm",views.personalInfoForm, name="personalInfoForm"),
+    path('view-info', views.view_info, name='view_info'),
+    path('viewMessBill', views.viewMessBill, name='viewMessBill'),
+    path('viewRecords', views.viewRecords, name='viewRecords'),
+    path('viewStudentInfo', views.viewStudentInfo, name='viewStudentInfo'),
+    path('viewComplaints', views.viewComplaints, name='viewComplaints'),
 ]

@@ -114,3 +114,18 @@ def editMessBill(request):
 
 def personalInfoForm(request):
     return render(request,'personalInfoForm.html')
+
+def view_info(request):
+    return render(request, 'viewInfo.html')
+
+def viewMessBill(request):
+    return render(request, 'viewMessBill.html')
+
+def viewRecords(request):
+    return render(request, 'viewRecords.html')
+
+def viewStudentInfo(request):
+    return render(request, 'viewStudentInfo.html')
+
+def viewComplaints(request):
+    return render(request, 'viewComplaints.html')
