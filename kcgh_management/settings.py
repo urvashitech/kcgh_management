@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'kcgh_management',
     'users',
     'mess',
+    
+    
 ]
 
 MIDDLEWARE = [

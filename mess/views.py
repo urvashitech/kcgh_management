@@ -6,7 +6,9 @@ from django.contrib import messages
 from mess.models import MessBill
 from users.models import User as CustomUser
 from complaints.models import Complaint
-# Create your views here.
+from mess.forms import AdminProfileForm
+
+
 
 
 def home(request):
@@ -18,7 +20,6 @@ def home(request):
 def messbill(request):
     mess_bill = MessBill.objects.filter(user=request.user).first()
     return render(request, "messbill.html", {'mess_bill': mess_bill, 'user': request.user})
-
 
 def handleLogin(request):
     if request.method == "POST":
@@ -33,12 +34,9 @@ def handleLogin(request):
                 return redirect("manage_db")
 
             mess_bill = MessBill.objects.filter(user=request.user).first()
-
-          
             return render(request, "studentProf.html", {"mess_bill": mess_bill})  
 
         else:
-           
             return render(request, "404.html")
 
     return render(request, "home.html")
@@ -57,7 +55,6 @@ def personalInfo(request):
 
     return render(request, "personalInfo.html", {"user1": user_info, 'user': request.user})  
 
-
 def staffInfo(request):
     if request.user.is_authenticated:
         logout(request)
@@ -66,16 +63,15 @@ def staffInfo(request):
 def studentInfo(request):
     return render(request, "studentProf.html")
 
-
 def complain(request):
     if request.method == "POST":
         print("Received form data:", request.POST) 
         name = request.POST.get("name")
         email = request.POST.get("email")
         category = request.POST.get("category")
-        description = request.POST.get("description")  # ✅ Must match model
+        description = request.POST.get("description")
         print("Extracted description:", description)
-        # ✅ Check if description is received properly
+
         if not description:
             messages.error(request, "Complaint description cannot be empty.")
             return redirect("complain")
@@ -84,33 +80,44 @@ def complain(request):
             name=name,
             email=email,
             category=category,
-            description=description  # ✅ This must match the model field name
+            description=description
         )
 
         messages.success(request, "Your complaint has been submitted successfully.")
         return redirect("complain")
-    print("Received form data:", request.POST)
 
+    print("Received form data:", request.POST)
     return render(request, "complain.html") 
 
 @login_required
-
 def manage_db(request):
-    admin = ["warden","matron"]
+    admin = ["warden", "matron"]
     if request.user.username in admin:
-        return render(request, "manage_db.html" , {"role": request.user.username})
+        return render(request, "manage_db.html", {"role": request.user.username})
     else:
         return render(request, "404.html")
 
-
 def edit_page(request):
-    return render(request,'edit.html')
+    return render(request, 'edit.html')
 
 def calMessBill(request):
-    return render(request,'calMessBill.html')
+    return render(request, 'calMessBill.html')
 
 def editMessBill(request):
-    return render(request,'messBillForm.html')
+    return render(request, 'messBillForm.html')
 
 def personalInfoForm(request):
-    return render(request,'personalInfoForm.html')
+    return render(request, 'personalInfoForm.html')
+
+
+@login_required
+def create_admin_profile(request):
+    if request.method == "POST":
+        form = AdminProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Admin profile created successfully.")
+            return redirect("home")  
+    else:
+        form = AdminProfileForm()
+    return render(request, "adminProfile.html", {"form": form})
