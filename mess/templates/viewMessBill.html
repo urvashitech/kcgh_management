@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} <title>Student Profile</title> {% endblock %}
+{% load static %}
+{% block body %}
+
+{% include "components/navbar2.html" %}
+
+<style>
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+
+
+{% endblock %}
