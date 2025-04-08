@@ -43,3 +43,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+    
+
+class MonthlyMessSummary(models.Model):
+    month_year = models.CharField(max_length=7)  
+    total_spent = models.PositiveIntegerField()
+    total_days = models.PositiveIntegerField()
+    number_of_girls = models.PositiveIntegerField()
+    per_day_charge = models.FloatField()
+
+    def __str__(self):
+        return f"{self.month_year} - ₹{self.per_day_charge}/day"

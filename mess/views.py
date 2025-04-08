@@ -4,8 +4,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from mess.models import MessBill
+from mess.models import MonthlyMessSummary
 from users.models import StudentInfo
 from complaints.models import Complaint
+from django.core.exceptions import MultipleObjectsReturned
 
 from datetime import datetime
 from django.db.models import Sum
@@ -108,23 +110,41 @@ def edit_page(request):
     return render(request, 'edit.html')
 
 def calMessBill(request):
-
-    if request.method == "POST":
-        guest_charge = float(request.POST.get("g_charge"))
-
-    nuumber_of_girls = User.objects.count()
+    amount_spend = 0
+    t_days = 0
+    sum = 0
+    per_day_charge = 0.0
+    number_of_girls = User.objects.exclude(username__in=["warden", "matron","admin"]).count()
     constant_charge = 800
-    total_days = (
-    MessBill.objects.values('month_year').annotate(total_days=Sum('number_of_days')).order_by('month_year'))
-    for entry in total_days:
-        print(f"Month: {entry['month_year']}, Total Days: {entry['total_days']}")
-        
-    print("Total days for girls:", total_days)
-    
-    print("The guest charge is:", guest_charge)
-    #calculating mess bill 
-    month = datetime.now().strftime("%Y-%m")
+    if request.method == "POST":
+        amount_spend = int(request.POST.get("s_amont"))
+        t_days = int(request.POST.get("t_days"))
 
+        if t_days == 0:
+            messages.error(request, "Total days cannot be zero.")
+        else:
+            #calculating mess bill 
+            sum = int(number_of_girls * constant_charge)
+            per_day_charge = float( (amount_spend - sum) / t_days)
+
+    print("Total number of girls are : ",number_of_girls)
+    print("Total amount spent:", amount_spend)
+    print("Total Number of days:",t_days)
+    print("sum is : ", sum)
+    print("Per day charge:", per_day_charge)
+    month = datetime.now().strftime("%Y-%m")
+    try:
+            MonthlyMessSummary.objects.update_or_create(
+                month_year=month,
+                defaults={
+                    "total_spent": amount_spend,
+                    "total_days": t_days,
+                    "number_of_girls": number_of_girls,
+                    "per_day_charge": per_day_charge
+                }
+            )
+    except MultipleObjectsReturned:
+            return render(request, "404.html")
 
     return render(request,'calMessBill.html')
 
@@ -133,10 +153,12 @@ def editMessBill(request):
         name = request.POST.get("name")
         sch_no = request.POST.get("sch_no")
         days = int(request.POST.get("n_days"))
-        
+        g_amont = int(request.POST("g_amont"))
 
         try :
             previous_data = MessBill.objects.get(sch_no=sch_no)
+            per_day_charge = MonthlyMessSummary.objects.get(month_year=datetime.now().strftime("%Y-%m")).per_day_charge
+            total_amount = (per_day_charge * days) + g_amont
             MessBill.objects.create(
                 user=previous_data.user,
                 name=name,
@@ -145,15 +167,19 @@ def editMessBill(request):
                 category=previous_data.category,
                 year=previous_data.year,
                 number_of_days=days,
-                total_amount=0,  
+                total_amount=total_amount,  
                 dues=0,  
                 month_year=datetime.now().strftime("%Y-%m")
             )
+            print("Mess Bill created successfully!")
+            print("Mess Bill total is:", total_amount)
+            
             messages.success(request, "Mess Bill successfully recorded!")
             return render(request,"viewMessBill")
         except MessBill.DoesNotExist:
             messages.error(request, "No previous record found for this Scholar Number.")
-
+    print("Mess Bill created successfully!")
+    print("mess Bill is : ", total_amount)
     return render(request,'messBillForm.html')
 
 def personalInfoForm(request):

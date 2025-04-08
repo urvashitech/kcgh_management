@@ -34,53 +34,22 @@
             <div class="p-4 rounded shadow-lg" style="background-color: #f1e9d2; color: white;">
                 
                 <!-- Header -->
-                <h2 class="text-center mb-4  text-white p-3 rounded" style="background-color:#5a3e1b ;">Edit The Mess Bill</h2>
+                <h2 class="text-center mb-4  text-white p-3 rounded" style="background-color:#5a3e1b ;">Calculate Mess Bill</h2>
         
-                <form method="post" action="{% url 'complain' %}">
+                <form method="post" action="{% url 'calMessBill' %}">
                     {% csrf_token %}
                     
                     <div class="mb-3">
-                        <label for="name" class="form-label text-black">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter student name" required>
+                        <label for="s_amont" class="form-label text-black">Amont Spend:</label>
+                        <input type="text" id="s_amont" name="s_amont" class="form-control" placeholder="Enter Total Amont Spend" required>
                     </div>
                 
                     <div class="mb-3">
-                        <label for="sch_no" class="form-label text-black">Sch No.:</label>
-                        <input type="sch_no" id="sch_no" name="sch_no" class="form-control" placeholder="Enter student's Sch no. " required>
+                        <label for="t_days" class="form-label text-black">Total Number Of Days:</label>
+                        <input type="text" id="t_days" name="t_days" class="form-control" placeholder="Enter Total Number Of Days" required>
                     </div>
-                
-                    <div class="mb-3">
-                        <label for="category" class="form-label text-black">Category</label>
-                        <input type="category" id="category" name="category" class="form-control" placeholder="Enter student's category name" required>
-                    </div>
-                
-                    <div class="mb-3">
-                        <label for="branch" class="form-label text-black">Branch</label>
-                        <input type="branch" id="branch" name="branch" class="form-control" placeholder="Enter student's branch name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="year" class="form-label text-black">Year</label>
-                        <input type="year" id="year" name="year" class="form-control" placeholder="Enter student's year name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="n_days" class="form-label text-black">No. Of Days</label>
-                        <input type="n_days" id="n_days" name="n_days" class="form-control" placeholder="Enter student's no. of days name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="t_amount" class="form-label text-black">Total Amonut</label>
-                        <input type="t_amount" id="t_amount" name="t_amount" class="form-control" placeholder="Enter student's total amount name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="dues" class="form-label text-black">Dues</label>
-                        <input type="dues" id="dues" name="dues" class="form-control" placeholder="Enter student's dues name" required>
-                    </div>
-                
                     <div class="text-center">
-                        <button type="submit" class="btn" style="background-color:#5a3e1b; color:white">Submit Complaint</button>
+                        <button type="submit" class="btn" style="background-color:#5a3e1b; color:white">Save</button>
                     </div>
                 </form>
                 
