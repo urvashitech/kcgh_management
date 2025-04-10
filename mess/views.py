@@ -200,6 +200,9 @@ def viewStudentInfo(request):
 def viewComplaints(request):
     return render(request, 'viewComplaints.html')
 
+def monthly_bill(request):
+    return render(request, 'monthly_bill.html')
+
 
 
 def editMessBill(request):
@@ -220,3 +223,11 @@ def create_admin_profile(request):
     else:
         form = AdminProfileForm()
     return render(request, "adminProfile.html", {"form": form})
+
+def view_mess_month_list(request):
+    month_summaries = MonthlyMessSummary.objects.order_by('-month_year')
+    return render(request, 'mess/viewMessBill.html', {'month_summaries': month_summaries})
+
+def view_monthly_bill(request, month):
+    bills = MessBill.objects.filter(month_year=month).order_by('name')
+    return render(request, 'mess/monthly_bill.html', {'bills': bills, 'month': month})

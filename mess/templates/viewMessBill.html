@@ -13,6 +13,29 @@
     }
 </style>
 
+<div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
+    <div class="container text-white p-5 rounded"
+        style="background: #f1e9d2; color: black !important; max-width: 800px;">
+
+    <div class="container text-white  d-flex flex-column justify-content-center align-items-center"
+    style="background: #f1e9d2; color: black !important; ">
+    
+
+    <h2>Select a Month</h2>
+    <ul class="list-group mt-3">
+        {% for summary in month_summaries %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'monthly_bill' month=summary.month_year %}">
+                    {{ summary.month_year }}
+                </a>
+                ₹{{ summary.per_day_charge }}/day
+            </li>
+        {% empty %}
+            <li class="list-group-item">No records available yet.</li>
+        {% endfor %}
+    </ul>
+    
+</div>
 
 
 {% endblock %}
