@@ -17,13 +17,14 @@ class MessBill(models.Model):
     dues = models.IntegerField(default= 0)
     month_year = models.CharField(max_length=7, default=datetime.now().strftime("%Y-%m"))
 
-    dues = models.IntegerField(default=0)
-
-
     def save(self, *args, **kwargs):
-        if self.user and MessBill.objects.filter(user=self.user, month_year=self.month_year).exists() and not self.pk:
-            raise ValidationError("A MessBill for this user already exists for this month.")
-        super().save(*args, **kwargs)
+
+        if not self.month_year:
+            self.month_year = datetime.now().strftime("%Y-%m")
+    
+        if MessBill.objects.filter(sch_no=self.sch_no, month_year=self.month_year).exists() and not self.pk:
+            raise ValidationError("A MessBill for this sch_no already exists for this month.")
+        super(MessBill, self).save(*args, **kwargs)
 
     @property
     def display_year(self):

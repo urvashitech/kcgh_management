@@ -1,4 +1,6 @@
-from django.shortcuts import render , redirect
+print("✅ views.py loaded")
+from django.shortcuts import render , redirect  
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -8,6 +10,7 @@ from mess.models import MonthlyMessSummary
 from users.models import StudentInfo
 from complaints.models import Complaint
 from django.core.exceptions import MultipleObjectsReturned
+from datetime import datetime
 
 from datetime import datetime
 from django.db.models import Sum
@@ -17,6 +20,7 @@ def home(request):
     if request.user.is_authenticated:
         logout(request)  
     return render(request, "home.html")
+
 
 @login_required
 def messbill(request):
@@ -134,53 +138,94 @@ def calMessBill(request):
     print("Per day charge:", per_day_charge)
     month = datetime.now().strftime("%Y-%m")
     try:
-            MonthlyMessSummary.objects.update_or_create(
-                month_year=month,
-                defaults={
-                    "total_spent": amount_spend,
-                    "total_days": t_days,
-                    "number_of_girls": number_of_girls,
-                    "per_day_charge": per_day_charge
-                }
-            )
+        MonthlyMessSummary.objects.update_or_create(
+            month_year=month,
+            defaults={
+                "total_spent": amount_spend,
+                "total_days": t_days,
+                "number_of_girls": number_of_girls,
+                "per_day_charge": per_day_charge
+            }
+        )
     except MultipleObjectsReturned:
             return render(request, "404.html")
 
     return render(request,'calMessBill.html')
 
-def editMessBill(request):
+def testEditBill(request):
+    user = request.user
+    name = ""
+    sch_no = 0
+    n_days = 0
+    g_amont = 0
+    constant_charge = 800
+
+    category = ""
+    branch = ""
+    year = 0
+    dues = 0
+    total_amonut = 0
+
     if request.method == "POST":
+       
         name = request.POST.get("name")
         sch_no = request.POST.get("sch_no")
-        days = int(request.POST.get("n_days"))
-        g_amont = int(request.POST("g_amont"))
+        n_days = request.POST.get("n_days")
+        g_amont = request.POST.get("g_amont")
 
-        try :
-            previous_data = MessBill.objects.get(sch_no=sch_no)
-            per_day_charge = MonthlyMessSummary.objects.get(month_year=datetime.now().strftime("%Y-%m")).per_day_charge
-            total_amount = (per_day_charge * days) + g_amont
-            MessBill.objects.create(
-                user=previous_data.user,
+        
+        if name and sch_no and n_days and g_amont:
+            n_days = int(n_days)
+            g_amont = int(g_amont)
+            sch_no = int(sch_no)
+            month_year = datetime.now().strftime("%Y-%m")
+
+            per_day_charge = MonthlyMessSummary.objects.filter(month_year=datetime.now().strftime("%Y-%m")).values('per_day_charge').first()
+
+            if  per_day_charge.get('per_day_charge', 0) > 0:
+                per_day_charge = float(per_day_charge['per_day_charge']) 
+                total_amount = (n_days * per_day_charge) + (constant_charge + g_amont)
+
+            print("The name of the student is: ", name)
+            print("The sch_no of the student is: ", sch_no)
+            print("The number of days is: ", n_days)
+            print("The guest amount is: ", g_amont)
+            print("The per day charge is: ", per_day_charge)
+            print("The total amount is: ", total_amount)
+
+            if MessBill.objects.filter(sch_no=sch_no, month_year=month_year).exists():
+                messages.error(request, "A MessBill for this student already exists for this month.")
+                return render(request, "messBillForm.html")
+
+            try:
+                bill = MessBill.objects.get(sch_no=sch_no)
+            except MessBill.DoesNotExist:
+                messages.error(request, "Student profile not found for this sch_no.")
+                return render(request, "messBillForm.html")
+            mess_bill = MessBill(
+                user = bill.user,
                 name=name,
                 sch_no=sch_no,
-                branch=previous_data.branch,
-                category=previous_data.category,
-                year=previous_data.year,
-                number_of_days=days,
-                total_amount=total_amount,  
-                dues=0,  
-                month_year=datetime.now().strftime("%Y-%m")
+                category=bill.category,
+                branch=bill.branch,
+                year=bill.year,
+                number_of_days=n_days,
+                total_amount=total_amount,
+                dues=bill.dues,
+                month_year=month_year,
             )
-            print("Mess Bill created successfully!")
-            print("Mess Bill total is:", total_amount)
-            
-            messages.success(request, "Mess Bill successfully recorded!")
-            return render(request,"viewMessBill")
-        except MessBill.DoesNotExist:
-            messages.error(request, "No previous record found for this Scholar Number.")
-    print("Mess Bill created successfully!")
-    print("mess Bill is : ", total_amount)
-    return render(request,'messBillForm.html')
+            try:
+                mess_bill.save()
+                messages.success(request, "Mess Bill saved successfully.")
+            except ValidationError as e:
+                messages.error(request, str(e))    
+                
+        else:
+            messages.error(request, "Please fill all the required fields.")        
+        
+    return render(request, "messBillForm.html")
+
+
 
 def personalInfoForm(request):
     return render(request,'personalInfoForm.html')
