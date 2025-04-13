@@ -149,16 +149,33 @@ def calMessBill(request):
     return render(request,'calMessBill.html')
 
 def editMessBill(request):
+    print("🔥 View Called!")
+    print("Method:", request.method)
     if request.method == "POST":
-        name = request.POST.get("name")
-        sch_no = request.POST.get("sch_no")
-        days = int(request.POST.get("n_days"))
-        g_amont = int(request.POST("g_amont"))
+        print("✅ POST received")
+        print("POST Data:", request.POST)
+    else:
+        print("👀 Not a POST request")
+    
+    '''if request.method == "POST":
+        try:
+            print("Inside POST request")
+            name = request.POST.get("name")
+            sch_no = request.POST.get("sch_no")
+            days = int(request.POST.get("n_days"))
+            g_amont = int(request.POST.get("g_amont"))
 
-        try :
+            print("Data from form:", name, sch_no, days, g_amont)
+
             previous_data = MessBill.objects.get(sch_no=sch_no)
-            per_day_charge = MonthlyMessSummary.objects.get(month_year=datetime.now().strftime("%Y-%m")).per_day_charge
+            per_day_charge = MonthlyMessSummary.objects.get(
+                month_year=datetime.now().strftime("%Y-%m")
+            ).per_day_charge
+
+            print("Per day charge is:", per_day_charge)
+
             total_amount = (per_day_charge * days) + g_amont
+
             MessBill.objects.create(
                 user=previous_data.user,
                 name=name,
@@ -167,20 +184,27 @@ def editMessBill(request):
                 category=previous_data.category,
                 year=previous_data.year,
                 number_of_days=days,
-                total_amount=total_amount,  
-                dues=0,  
+                total_amount=total_amount,
+                dues=0,
                 month_year=datetime.now().strftime("%Y-%m")
             )
+
             print("Mess Bill created successfully!")
             print("Mess Bill total is:", total_amount)
-            
+
             messages.success(request, "Mess Bill successfully recorded!")
-            return render(request,"viewMessBill")
+            return redirect("viewMessBill")  # 🧠 Use redirect if view name exists
+
         except MessBill.DoesNotExist:
+            print("No previous record found for:", sch_no)
             messages.error(request, "No previous record found for this Scholar Number.")
-    print("Mess Bill created successfully!")
-    print("mess Bill is : ", total_amount)
-    return render(request,'messBillForm.html')
+
+        except Exception as e:
+            print("Something went wrong:", e)'''
+
+    print("Fallback: Showing form again.")
+    return render(request, 'messBillForm.html')
+
 
 def personalInfoForm(request):
     return render(request,'personalInfoForm.html')
