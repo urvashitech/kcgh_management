@@ -20,4 +20,7 @@ urlpatterns = [
     path('viewRecords', views.viewRecords, name='viewRecords'),
     path('viewStudentInfo', views.viewStudentInfo, name='viewStudentInfo'),
     path('viewComplaints', views.viewComplaints, name='viewComplaints'),
+    path('viewMessBill', views.view_mess_month_list, name='mess_month_list'),
+    path('monthlyBill/<str:month>/', views.view_monthly_bill, name='monthly_bill'),
+
 ]

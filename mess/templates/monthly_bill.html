@@ -1,0 +1,34 @@
+<!-- templates/mess/monthly_bill.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Mess Bill for {{ month }}</h2>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Scholar No.</th>
+                <th>Branch</th>
+                <th>Year</th>
+                <th>No. of Days</th>
+                <th>Total Amount</th>
+                <th>Dues</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.name }}</td>
+                    <td>{{ bill.sch_no }}</td>
+                    <td>{{ bill.branch }}</td>
+                    <td>{{ bill.display_year }}</td>
+                    <td>{{ bill.number_of_days }}</td>
+                    <td>₹{{ bill.total_amount }}</td>
+                    <td>₹{{ bill.dues }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
