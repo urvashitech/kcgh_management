@@ -11,21 +11,23 @@
         url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
         background-size: cover;
     }
+
     label {
         font-weight: normal;
         margin-top: 10px;
-        color:black;
+        color: black;
     }
 
     .form-container {
         max-width: 800px;
         margin: 50px auto;
         padding: 30px;
-        background-color: #f1e9d2; 
+        background-color: #f1e9d2;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         color: black;
     }
+
     .form-header-box {
         background-color: #5a3e1b;
         color: white;
@@ -40,7 +42,9 @@
         margin-bottom: 20px;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
         padding: 10px;
         border-radius: 6px;
         border: none;
@@ -49,7 +53,7 @@
     }
 
     .custom-btn {
-        background-color: #5a3e1b; 
+        background-color: #5a3e1b;
         color: white;
         border: none;
         padding: 12px 35px;
@@ -60,7 +64,7 @@
     }
 
     .custom-btn:hover {
-        background-color: #3d2a10; 
+        background-color: #3d2a10;
     }
 </style>
 
@@ -70,140 +74,159 @@
         style="background: #f1e9d2; color: black !important; max-width: 900px;">
         <div class="container ">
             {% if messages %}
-                    <div class="mt-4">
-                        {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
             <!-- Complaint Form Container with Solid Background -->
             <div class="p-4 rounded shadow-lg" style="background-color: #f1e9d2; color: white;">
-                
+
                 <!-- Header -->
-                <h1 class="text-center mb-4  text-white p-3 rounded" style="background-color:#5a3e1b ; font-size: 30px;">Personal Information Form</h1>
-        
-        
-        
+                <h1 class="text-center mb-4  text-white p-3 rounded"
+                    style="background-color:#5a3e1b ; font-size: 30px;">Personal Information Form</h1>
 
-        <form method="POST">
-            {% csrf_token %}
 
-           
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input class="form-control" type="text" name="name" value="{{ profile.name }}" placeholder="Enter your full name" required>
-            </div>
 
-            <div class="form-group">
-                <label for="sch_no">Scholar Number:</label>
-                <input class="form-control" type="text" name="sch_no" value="{{ profile.sch_no }}" placeholder="Scholar Number" required>
-            </div>
 
-            <div class="form-group">
-                <label for="branch">Branch:</label>
-                <input class="form-control" type="text" name="branch" value="{{ profile.branch }}" placeholder="Your Branch" required>
-            </div>
+                <form method="POST" action="{% url 'personalInfoForm' %}">
+                    {% csrf_token %}
 
-            <div class="form-group">
-                <label for="year">Year:</label>
-                <input class="form-control" type="text" name="year" value="{{ profile.year }}" placeholder="Year of study" required>
-            </div>
 
-            <div class="form-group">
-                <label for="category">Category:</label>
-                <input class="form-control" type="text" name="category" value="{{ profile.category }}" placeholder="Category (e.g., General, OBC, etc.)" required>
-            </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input class="form-control" type="text" name="name" value="{{ profile.name }}"
+                            placeholder="Enter your full name" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="dob">Date of Birth:</label>
-                <input class="form-control" type="date" name="dob" value="{{ profile.dob|date:'Y-m-d' }}" required>
-            </div>
+                    <div class="form-group">
+                        <label for="sch_no">Scholar Number:</label>
+                        <input class="form-control" type="text" name="sch_no" value="{{ profile.sch_no }}"
+                            placeholder="Scholar Number" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="blood_group">Blood Group:</label>
-                <input class="form-control" type="text" name="blood_group" value="{{ profile.blood_group }}" placeholder="e.g., B+, O-, AB+" required>
-            </div>
+                    <div class="form-group">
+                        <label for="branch">Branch:</label>
+                        <input class="form-control" type="text" name="branch" value="{{ profile.branch }}"
+                            placeholder="Your Branch" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input class="form-control" type="email" name="email" value="{{ profile.email }}" placeholder="you@example.com" required>
-            </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input class="form-control" type="text" name="year" value="{{ profile.year }}"
+                            placeholder="Year of study" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <input class="form-control" type="text" name="address" value="{{ profile.address }}" placeholder="Permanent Address" required>
-            </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <input class="form-control" type="text" name="category" value="{{ profile.category }}"
+                            placeholder="Category (e.g., General, OBC, etc.)" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="phone">Phone Number:</label>
-                <input class="form-control" type="text" name="phone" value="{{ profile.phone }}" placeholder="Student's Phone Number" required>
-            </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth:</label>
+                        <input class="form-control" type="date" name="dob" value="{{ profile.dob|date:'Y-m-d' }}"
+                            placeholder="Date of Birth" required>
+                    </div>
 
-         <!-- <hr>
+                    <div class="form-group">
+                        <label for="blood_group">Blood Group:</label>
+                        <input class="form-control" type="text" name="blood_group" value="{{ profile.blood_group }}"
+                            placeholder="e.g., B+, O-, AB+" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input class="form-control" type="email" name="email" value="{{ profile.email }}"
+                            placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input class="form-control" type="text" name="address" value="{{ profile.address }}"
+                            placeholder="Permanent Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input class="form-control" type="text" name="phone" value="{{ profile.phone }}"
+                            placeholder="Student's Phone Number" required>
+                    </div>
+
+                    <!-- <hr>
             <h4 class="mt-4">Guardian Information</h4>--->
 
-            <div class="form-group">
-                <label for="g_no">Guardian Phone Number:</label>
-                <input class="form-control" type="text" name="g_no" value="{{ profile.g_no }}" placeholder="Guardian's Contact" required>
-            </div>
+                    <div class="form-group">
+                        <label for="g_no">Guardian Phone Number:</label>
+                        <input class="form-control" type="text" name="g_no" value="{{ profile.g_no }}"
+                            placeholder="Guardian's Contact" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="g_name">Guardian Name:</label>
-                <input class="form-control" type="text" name="g_name" value="{{ profile.g_name }}" required>
-            </div>
+                    <div class="form-group">
+                        <label for="g_name">Guardian Name:</label>
+                        <input class="form-control" type="text" name="g_name" value="{{ profile.g_name }}"
+                            placeholder="Guardian Name" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="g_email">Guardian Email:</label>
-                <input class="form-control" type="email" name="g_email" value="{{ profile.g_email }}" required>
-            </div>
+                    <div class="form-group">
+                        <label for="g_email">Guardian Email:</label>
+                        <input class="form-control" type="email" name="g_email" value="{{ profile.g_email }}"
+                            placeholder="you@example.com" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="g_occupation">Guardian Occupation:</label>
-                <input class="form-control" type="text" name="g_occupation" value="{{ profile.g_occupation }}" required>
-            </div>
+                    <div class="form-group">
+                        <label for="g_occupation">Guardian Occupation:</label>
+                        <input class="form-control" type="text" name="g_occupation" value="{{ profile.g_occupation }}"
+                            placeholder="Guardian Occupation" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="g_address">Guardian Address:</label>
-                <input class="form-control" type="text" name="g_address" value="{{ profile.g_address }}" required>
-            </div>
+                    <div class="form-group">
+                        <label for="g_address">Guardian Address:</label>
+                        <input class="form-control" type="text" name="g_address" value="{{ profile.g_address }}"
+                            placeholder="Guardian Address" required>
+                    </div>
 
-         
-            <div class="form-group">
-                <label for="e_no">Emergency Contact Number:</label>
-                <input class="form-control" type="text" name="e_no" value="{{ profile.e_no }}" placeholder="Alternate emergency contact" required>
-            </div>
 
-           
-           <!---- <hr>
-            <h4 class="mt-4">Local Guardian Information</h4>-->
+                    <div class="form-group">
+                        <label for="e_no">Emergency Contact Number:</label>
+                        <input class="form-control" type="text" name="e_no" value="{{ profile.e_no }}"
+                            placeholder="Alternate emergency contact" required>
+                    </div>
 
-            <div class="form-group">
-                <label for="l_name">Local Guardian Name:</label>
-                <input class="form-control" type="text" name="l_name" value="{{ profile.l_name }}" required>
-            </div>
 
-            <div class="form-group">
-                <label for="l_address">Local Guardian Address:</label>
-                <input class="form-control" type="text" name="l_address" value="{{ profile.l_address }}" required>
-            </div>
 
-            <div class="form-group">
-                <label for="l_no">Local Guardian Phone Number:</label>
-                <input class="form-control" type="text" name="l_no" value="{{ profile.l_no }}" required>
-            </div>
 
-            
-            <div class="form-group">
-                <label for="disease">Any Disease (if any):</label>
-                <input class="form-control" type="text" name="disease" value="{{ profile.disease }}" placeholder="Mention if you have any known disease">
-            </div>
-            <div class="text-center mt-4">
-                <button type="submit" class="custom-btn">Save</button>
-            </div>
-        </form>
-        
-    </div>
-</div>
+                    <div class="form-group">
+                        <label for="l_name">Local Guardian Name:</label>
+                        <input class="form-control" type="text" name="l_name" value="{{ profile.l_name }}"
+                            placeholder="Local Guardian Name" required>
+                    </div>
 
-{% endblock %}
+                    <div class="form-group">
+                        <label for="l_address">Local Guardian Address:</label>
+                        <input class="form-control" type="text" name="l_address" value="{{ profile.l_address }}"
+                            placeholder="Local Guardian  Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="l_no">Local Guardian Phone Number:</label>
+                        <input class="form-control" type="text" name="l_no" value="{{ profile.l_no }}"
+                            placeholder="Local Guardian's Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="disease">Any Disease (if any):</label>
+                        <input class="form-control" type="text" name="disease" value="{{ profile.disease }}"
+                            placeholder="Mention if you have any known disease">
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="custom-btn">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        {% endblock %}

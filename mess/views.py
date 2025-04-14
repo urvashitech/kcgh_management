@@ -1,4 +1,3 @@
-print("✅ views.py loaded")
 from django.shortcuts import render , redirect  
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
@@ -27,6 +26,7 @@ def messbill(request):
     mess_bill = MessBill.objects.filter(user=request.user).first()
     return render(request, "messbill.html", {'mess_bill': mess_bill, 'user': request.user})
 
+
 def handleLogin(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -35,7 +35,7 @@ def handleLogin(request):
 
         if user is not None:
             login(request, user)
-            admin_users = ["warden", "matron"]  # List of admin usernames
+            admin_users = ["warden", "matron"]  
             if user.username in admin_users:  
                 return redirect("manage_db")
 
@@ -52,22 +52,27 @@ def handleLogOut(request):
     messages.success(request, "Successfully Logged Out")
     return redirect("home")
 
+
 @login_required
 def personalInfo(request):
     user_info = StudentInfo.objects.filter(user=request.user).first() 
     if user_info is None:
         messages.error(request, "User data not found")
-        return redirect("home")  
+        return render(request,"404.html")  
 
     return render(request, "personalInfo.html", {"user1": user_info, 'user': request.user})  
+
 
 def staffInfo(request):
     if request.user.is_authenticated:
         logout(request)
     return render(request, "staffInfo.html")
 
+
 def studentInfo(request):
     return render(request, "studentProf.html")
+
+
 
 def complain(request):
     if request.method == "POST":
@@ -91,16 +96,14 @@ def complain(request):
             email=email,
             category=category,
             description=description 
-
-            
-
         )
-
         messages.success(request, "Your complaint has been submitted successfully.")
         return redirect("complain")
 
     print("Received form data:", request.POST)
     return render(request, "complain.html") 
+
+
 
 @login_required
 def manage_db(request):
@@ -109,9 +112,13 @@ def manage_db(request):
         return render(request, "manage_db.html", {"role": request.user.username})
     else:
         return render(request, "404.html")
+    
+
 
 def edit_page(request):
     return render(request, 'edit.html')
+
+
 
 def calMessBill(request):
     amount_spend = 0
@@ -131,11 +138,6 @@ def calMessBill(request):
             sum = int(number_of_girls * constant_charge)
             per_day_charge = float( (amount_spend - sum) / t_days)
 
-    print("Total number of girls are : ",number_of_girls)
-    print("Total amount spent:", amount_spend)
-    print("Total Number of days:",t_days)
-    print("sum is : ", sum)
-    print("Per day charge:", per_day_charge)
     month = datetime.now().strftime("%Y-%m")
     try:
         MonthlyMessSummary.objects.update_or_create(
@@ -152,19 +154,15 @@ def calMessBill(request):
 
     return render(request,'calMessBill.html')
 
+
 def testEditBill(request):
     user = request.user
     name = ""
     sch_no = 0
     n_days = 0
     g_amont = 0
-    constant_charge = 800
-
-    category = ""
-    branch = ""
-    year = 0
-    dues = 0
-    total_amonut = 0
+    constant_charge = 800 
+    total_amount = 0
 
     if request.method == "POST":
        
@@ -185,11 +183,6 @@ def testEditBill(request):
             if  per_day_charge.get('per_day_charge', 0) > 0:
                 per_day_charge = float(per_day_charge['per_day_charge']) 
                 total_amount = (n_days * per_day_charge) + (constant_charge + g_amont)
-
-            print("The name of the student is: ", name)
-            print("The sch_no of the student is: ", sch_no)
-            print("The number of days is: ", n_days)
-            print("The guest amount is: ", g_amont)
             print("The per day charge is: ", per_day_charge)
             print("The total amount is: ", total_amount)
 
@@ -228,33 +221,119 @@ def testEditBill(request):
 
 
 def personalInfoForm(request):
+    name = ""
+    sch_no = 0
+    branch = ""
+    year = 0
+    category = ""
+    dob = ""
+    blood_group = ""
+    email = ""
+    address = ""
+    phone = ""
+    g_no = ""
+    g_name = ""
+    g_email = ""
+    g_occupation = ""
+    g_address = ""
+    e_no = ""
+    l_name = ""
+    l_address = ""
+    l_no = 0
+    disease = ""
+    if request.method =="POST":
+        name = request.POST.get("name")
+        sch_no = request.POST.get("sch_no")
+        branch = request.POST.get("branch")
+        year = request.POST.get("year")
+        category = request.POST.get("category")
+        dob = request.POST.get("dob")
+        blood_group = request.POST.get("blood_group")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        phone = request.POST.get("phone")
+        g_no = request.POST.get("g_no")
+        g_name = request.POST.get("g_name")
+        g_email = request.POST.get("g_email")
+        g_occupation = request.POST.get("g_occupation")
+        g_address = request.POST.get("g_address")
+        e_no = request.POST.get("e_no")
+        l_name = request.POST.get("l_name")
+        l_address = request.POST.get("l_address")
+        l_no = request.POST.get("l_no")
+        disease = request.POST.get("disease")
+
+        try:
+            user = User.objects.get(username = sch_no)
+        except User.DoesNotExist:
+            messages.error(request, "User profile not found for this sch_no.")
+            return render(request, "personalInfoForm.html")
+
+        studentInfo = StudentInfo.objects.create(
+            user = user,
+            name = name,
+            sch_no = sch_no,
+            branch = branch,
+            year = year,
+            category = category,
+            dob = dob,
+            blood_group = blood_group,
+            email = email,
+            address = address,
+            phone = phone,
+            g_no = g_no,
+            g_name = g_name,
+            g_email = g_email,
+            g_occupation = g_occupation,
+            g_address = g_address,
+            e_no = e_no,
+            l_name = l_name,
+            l_address = l_address,
+            l_no = l_no,
+            disease = disease,
+
+        )
+        try:
+                studentInfo.save()
+                messages.success(request, "Mess Bill saved successfully.")
+        except ValidationError as e:
+                messages.error(request, str(e))    
+
+        messages.success(request, "Your complaint has been submitted successfully.")
+        return redirect("personalInfoForm")
+    
+ 
+
     return render(request,'personalInfoForm.html')
 
 def view_info(request):
     return render(request, 'viewInfo.html')
 
+
 def viewMessBill(request):
     return render(request, 'viewMessBill.html')
+
 
 def viewRecords(request):
     return render(request, 'viewRecords.html')
 
+
 def viewStudentInfo(request):
     return render(request, 'viewStudentInfo.html')
 
+
 def viewComplaints(request):
     return render(request, 'viewComplaints.html')
+
 
 def monthly_bill(request):
     return render(request, 'monthly_bill.html')
 
 
-
 def editMessBill(request):
     return render(request, 'messBillForm.html')
 
-def personalInfoForm(request):
-    return render(request, 'personalInfoForm.html')
+
 
 
 @login_required
@@ -269,9 +348,11 @@ def create_admin_profile(request):
         form = AdminProfileForm()
     return render(request, "adminProfile.html", {"form": form})
 
+
 def view_mess_month_list(request):
     month_summaries = MonthlyMessSummary.objects.order_by('-month_year')
     return render(request, 'mess/viewMessBill.html', {'month_summaries': month_summaries})
+
 
 def view_monthly_bill(request, month):
     bills = MessBill.objects.filter(month_year=month).order_by('name')
