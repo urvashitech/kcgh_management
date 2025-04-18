@@ -16,11 +16,9 @@ urlpatterns = [
     path('testEditBill', views.testEditBill, name='testEditBill'),
     path("personalInfoForm",views.personalInfoForm, name="personalInfoForm"),
     path('view-info', views.view_info, name='view_info'),
-    path('viewMessBill', views.viewMessBill, name='viewMessBill'),
     path('viewRecords', views.viewRecords, name='viewRecords'),
     path('viewStudentInfo', views.viewStudentInfo, name='viewStudentInfo'),
     path('viewComplaints', views.viewComplaints, name='viewComplaints'),
-    path('viewMessBill', views.view_mess_month_list, name='mess_month_list'),
-    path('monthlyBill/<str:month>/', views.view_monthly_bill, name='monthly_bill'),
-
+     path('viewMessBill', views.viewMessBill, name='viewMessBill'),
+    path('monthlyBill/<str:month>/', views.monthly_bill, name='monthly_bill'),
 ]

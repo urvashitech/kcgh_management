@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} <title>Student Profile</title> {% endblock %}
+{% block title %} <title>View Mess Bill</title> {% endblock %}
 {% load static %}
 {% block body %}
 
@@ -21,19 +21,33 @@
     style="background: #f1e9d2; color: black !important; ">
     
 
-    <h2>Select a Month</h2>
-    <ul class="list-group mt-3">
-        {% for summary in month_summaries %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{% url 'monthly_bill' month=summary.month_year %}">
-                    {{ summary.month_year }}
-                </a>
-                ₹{{ summary.per_day_charge }}/day
-            </li>
-        {% empty %}
-            <li class="list-group-item">No records available yet.</li>
-        {% endfor %}
-    </ul>
+    <h2>Select Month to View Mess Bill</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            {% for month in months %}
+                <button type="submit" name="month" value="{{ month }}" class="month-button">{{ month }}</button>
+            {% endfor %}
+        </div>
+    </form>
+
+    <style>
+        .month-button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .month-button:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
     
 </div>
 

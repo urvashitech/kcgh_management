@@ -1,34 +1,109 @@
-<!-- templates/mess/monthly_bill.html -->
-{% extends "base.html" %}
-{% block content %}
-<div class="container mt-4">
-    <h2>Mess Bill for {{ month }}</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Scholar No.</th>
-                <th>Branch</th>
-                <th>Year</th>
-                <th>No. of Days</th>
-                <th>Total Amount</th>
-                <th>Dues</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bill in bills %}
+{% block body %}
+
+{% include "components/navbar2.html" %}
+
+<style>
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
+    <div class="container text-white p-5 rounded"
+        style="background: #f1e9d2; color: black !important; max-width: 900px;">
+
+    <div class="container text-white  d-flex flex-column justify-content-center align-items-center"
+    style="background: #f1e9d2; color: black !important; ">
+    
+    <style>
+        .table-container {
+            margin: 25px auto;
+            width: 100%;
+            max-width: 1000px;
+            background-color: #1f2937; /* dark background for header container */
+            padding: 20px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        .table-container h2 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            color: black;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #111827;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+
+        tbody tr:hover {
+            background-color: #e5e7eb;
+        }
+    </style>
+
+    <div class="table-container">
+        <h2>Mess Bill Information</h2>
+
+        {% if bills %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Scholar No.</th>
+                    <th>Category</th>
+                    <th>Branch</th>
+                    <th>Year</th>
+                    <th>No. of Days</th>
+                    <th>Total Amount</th>
+                    <th>Dues</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
                 <tr>
                     <td>{{ bill.name }}</td>
                     <td>{{ bill.sch_no }}</td>
+                    <td>{{ bill.category }}</td>
                     <td>{{ bill.branch }}</td>
                     <td>{{ bill.display_year }}</td>
                     <td>{{ bill.number_of_days }}</td>
-                    <td>₹{{ bill.total_amount }}</td>
-                    <td>₹{{ bill.dues }}</td>
+                    <td>{{ bill.total_amount }}</td>
+                    <td>{{ bill.dues }}</td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="text-align: center;">No bills available for this month.</p>
+        {% endif %}
+        <div style="text-align: center; padding: 20px;">
+            <a href="{% url 'viewMessBill' %}" class="btn btn-primary mb-3">Back</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

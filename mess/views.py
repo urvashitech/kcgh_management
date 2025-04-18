@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect  
+from django.shortcuts import render , redirect 
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -8,6 +8,9 @@ from mess.models import MessBill
 from mess.models import MonthlyMessSummary
 from users.models import StudentInfo
 from complaints.models import Complaint
+from django.urls import reverse
+from datetime import datetime
+import calendar
 from django.core.exceptions import MultipleObjectsReturned
 from datetime import datetime
 
@@ -349,11 +352,31 @@ def create_admin_profile(request):
     return render(request, "adminProfile.html", {"form": form})
 
 
-def view_mess_month_list(request):
-    month_summaries = MonthlyMessSummary.objects.order_by('-month_year')
-    return render(request, 'mess/viewMessBill.html', {'month_summaries': month_summaries})
+
+def monthly_bill(request, month):
+    month = month.capitalize()
+    month_number = list(calendar.month_name).index(month) if month in calendar.month_name else None
+
+    if not month_number:
+        return render(request, 'monthly_bill.html', {'bills': []})
+
+    current_year = datetime.now().year
+    formatted_month_year = f"{current_year}-{month_number:02d}"
+    bills = MessBill.objects.filter(month_year=formatted_month_year)
+
+    return render(request, 'monthly_bill.html', {'bills': bills}, )
 
 
-def view_monthly_bill(request, month):
-    bills = MessBill.objects.filter(month_year=month).order_by('name')
-    return render(request, 'mess/monthly_bill.html', {'bills': bills, 'month': month})
+def viewMessBill(request):
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    
+    if request.method == "POST":
+        selected_month = request.POST.get('month')
+        if selected_month:
+            url = reverse('monthly_bill', kwargs={'month': selected_month})
+            return redirect(url)
+    
+    return render(request, 'viewMessBill.html', {'months': months})
