@@ -3,7 +3,7 @@ from django.urls import path , include
 from mess import views
 urlpatterns = [
     path("", views.home, name="home"),
-    path("messbill", views.messbill, name="messbill"),
+    path("messbill/<str:month>/", views.messbill, name="messbill"),
     path('handleLogin/', views.handleLogin, name='handleLogin'),
     path('handleLogOut/', views.handleLogOut, name='handleLogOut'),   
     path("personalInfo", views.personalInfo, name="personalInfo"),
@@ -17,8 +17,10 @@ urlpatterns = [
     path("personalInfoForm",views.personalInfoForm, name="personalInfoForm"),
     path('view-info', views.view_info, name='view_info'),
     path('viewRecords', views.viewRecords, name='viewRecords'),
-    path('viewStudentInfo', views.viewStudentInfo, name='viewStudentInfo'),
+    path('viewStudentInfo', views.view_student_list, name='viewStudentInfo'),
     path('viewComplaints', views.viewComplaints, name='viewComplaints'),
-     path('viewMessBill', views.viewMessBill, name='viewMessBill'),
+    path('viewMessBill', views.viewMessBill, name='viewMessBill'),
+    path('monthWiseBill', views.monthWiseBill, name='monthWiseBill'),
     path('monthlyBill/<str:month>/', views.monthly_bill, name='monthly_bill'),
+    path('students/<int:student_id>/', views.student_detail, name='student_detail'),
 ]

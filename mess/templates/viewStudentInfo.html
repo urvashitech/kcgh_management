@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} <title>Student Profile</title> {% endblock %}
+{% block title %}<title>Student Profiles</title>{% endblock %}
 {% load static %}
 {% block body %}
 
@@ -10,9 +10,54 @@
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
         url("{% static 'images/kchostel.jpg' %}") no-repeat center center fixed;
         background-size: cover;
+        color: white;
+    }
+    .student-list {
+        margin: 40px auto;
+        width: 100%;
+        background-color: rgba(0,0,0,0.6);
+        padding: 20px;
+        border-radius: 12px;
+    }
+    .student-list ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    .student-list li {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .student-list li a {
+        color: #ffffff;
+        font-size: 18px;
+        text-decoration: none;
+    }
+    .student-list li a:hover {
+        text-decoration: underline;
     }
 </style>
+<div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
+    <div class="container text-white p-5 rounded"
+        style="background: #f1e9d2; color: black !important; max-width: 1000px;">
 
-
-
+    <div class="container text-white  d-flex flex-column justify-content-center align-items-center"
+    style="background: #f1e9d2; color: black !important; ">
+    <h1>STUDENT LIST</h1>
+    <div class="student-list">
+        {% if students %}
+            <ul>
+                {% for student in students %}
+                    <li>
+                        <a href="{% url 'student_detail' student.id %}">{{ student.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No students found.</p>
+        {% endif %}
+    </div>
+    <div style="text-align: center; padding: 20px;">
+        <a href="{% url 'view_info' %}" class="btn btn-primary mb-3">Back</a>
+    </div>
+</div>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %} <title>View Mess Bill</title> {% endblock %}
+{% block title %} <title>View Mess Bill for Student</title> {% endblock %}
 {% load static %}
 {% block body %}
 
-{% include "components/navbar2.html" %}
+{% include "components/navbar.html" %}
 
 <style>
     body {
@@ -48,9 +48,6 @@
             background-color: #e0e0e0;
         }
     </style>
-    <div style="text-align: center; padding: 20px;">
-        <a href="{% url 'view_info' %}" class="btn btn-primary mb-3">Back</a>
-    </div>
     
 </div>
 

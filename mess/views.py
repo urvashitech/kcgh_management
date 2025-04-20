@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect 
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -9,12 +10,12 @@ from mess.models import MonthlyMessSummary
 from users.models import StudentInfo
 from complaints.models import Complaint
 from django.urls import reverse
-from datetime import datetime
 import calendar
 from django.core.exceptions import MultipleObjectsReturned
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 
-from datetime import datetime
+
 from django.db.models import Sum
 # Create your views here.
 
@@ -25,9 +26,27 @@ def home(request):
 
 
 @login_required
-def messbill(request):
-    mess_bill = MessBill.objects.filter(user=request.user).first()
-    return render(request, "messbill.html", {'mess_bill': mess_bill, 'user': request.user})
+def messbill(request, month):
+    print("Month from URL:", month)
+
+    try:
+        month_number = list(calendar.month_name).index(month)  # April => 4
+    except ValueError:
+        return HttpResponse("Invalid month")
+
+    current_year = datetime.now().year
+    formatted_month = f"{current_year}-{month_number:02d}"  # 2025-04
+
+    mess_bill = MessBill.objects.filter(user=request.user, month_year=formatted_month).first()
+
+    print("Filtered mess bill:", mess_bill)
+
+    return render(request, "messbill.html", {
+        'mess_bill': mess_bill,
+        'user': request.user,
+        'month': month,
+        'bills': bool(mess_bill),
+    })
 
 
 def handleLogin(request):
@@ -337,22 +356,6 @@ def editMessBill(request):
     return render(request, 'messBillForm.html')
 
 
-
-
-@login_required
-def create_admin_profile(request):
-    if request.method == "POST":
-        form = AdminProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Admin profile created successfully.")
-            return redirect("home")  
-    else:
-        form = AdminProfileForm()
-    return render(request, "adminProfile.html", {"form": form})
-
-
-
 def monthly_bill(request, month):
     month = month.capitalize()
     month_number = list(calendar.month_name).index(month) if month in calendar.month_name else None
@@ -366,6 +369,16 @@ def monthly_bill(request, month):
 
     return render(request, 'monthly_bill.html', {'bills': bills}, )
 
+def monthWiseBill(request):
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+              'August', 'September', 'October', 'November', 'December']
+    
+    if request.method == "POST":
+        selected_month = request.POST.get("month")
+        if selected_month:
+            return redirect(reverse('messbill', kwargs={'month': selected_month}))
+    
+    return render(request, 'monthWiseBill.html', {'months': months})
 
 def viewMessBill(request):
     months = [
@@ -380,3 +393,11 @@ def viewMessBill(request):
             return redirect(url)
     
     return render(request, 'viewMessBill.html', {'months': months})
+
+def view_student_list(request):
+    students = StudentInfo.objects.all()
+    return render(request, 'viewStudentInfo.html', {'students': students})
+
+def student_detail(request, student_id):
+    student = get_object_or_404(StudentInfo, id=student_id)
+    return render(request, 'student_detail.html', {'student': student})
