@@ -1,6 +1,8 @@
 
 from django.urls import path , include
 from mess import views
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path("", views.home, name="home"),
     path("messbill/<str:month>/", views.messbill, name="messbill"),
@@ -23,4 +25,9 @@ urlpatterns = [
     path('monthWiseBill', views.monthWiseBill, name='monthWiseBill'),
     path('monthlyBill/<str:month>/', views.monthly_bill, name='monthly_bill'),
     path('students/<int:student_id>/', views.student_detail, name='student_detail'),
+    path('viewComplaints/', views.viewComplaints, name='viewComplaints'),
+    path('complaints/<int:pk>/toggle_status/', views.toggle_status, name='toggle_status'),
+    path('change-password/', auth_views.PasswordChangeView.as_view(template_name='auth/change_password.html'), name='change_password'),
+    path('change-password-done/', auth_views.PasswordChangeDoneView.as_view(template_name='auth/change_password_done.html'), name='password_change_done'),
+    
 ]
