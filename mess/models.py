@@ -55,3 +55,5 @@ class MonthlyMessSummary(models.Model):
 
     def __str__(self):
         return f"{self.month_year} - ₹{self.per_day_charge}/day"
+    
+
