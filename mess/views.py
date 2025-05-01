@@ -14,6 +14,11 @@ import calendar
 from django.core.exceptions import MultipleObjectsReturned
 from datetime import datetime
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
+from complaints.models import Complaint
+from django.utils import timezone
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 
 from django.db.models import Sum
@@ -401,3 +406,33 @@ def view_student_list(request):
 def student_detail(request, student_id):
     student = get_object_or_404(StudentInfo, id=student_id)
     return render(request, 'student_detail.html', {'student': student})
+
+
+def viewComplaints(request):
+    status_filter = request.GET.get("status")
+
+    if status_filter == "solved":
+        complaints = Complaint.objects.filter(is_solved=True)
+    elif status_filter == "unsolved":
+        complaints = Complaint.objects.filter(is_solved=False)
+    else:
+        complaints = Complaint.objects.all()
+
+    return render(request, "viewComplaints.html", {"complaints": complaints})
+
+
+def toggle_status(request, pk):
+    complaint = Complaint.objects.get(pk=pk)
+    complaint.is_solved = not complaint.is_solved
+
+    if complaint.is_solved:
+        complaint.solved_at = timezone.now()
+    else:
+        complaint.solved_at = None
+
+    complaint.save()
+    return redirect('viewComplaints')
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'auth/change_password.html'
+    success_url = reverse_lazy('password_change_done')

@@ -14,50 +14,12 @@
     
     <a href="{% url 'login' %}"></a>
 
-    <div class="row">
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
     
-                    <div class="modal-body">
-                        <!-- Login Form -->
-                        <form method="POST" action="{% url 'login' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
-                            </div>
-    
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-    
-                            <button type="submit" class="btn btn-dark">Login</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
     <div class="container mt-5">
-        {% if messages %}
-                <div class="mt-4">
-                    {% for message in messages %}
-                        <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        
             
-        <!-- Complaint Form Container with Solid Background -->
         <div class="p-4 rounded shadow-lg" style="background-color: #f1e9d2; color: white;">
             
-            <!-- Header -->
             <h2 class="text-center mb-4 bg-danger text-white p-3 rounded">Submit a Complaint</h2>
     
             <form method="post" action="{% url 'complain' %}">
@@ -81,7 +43,8 @@
                         <option value="hostel">Hostel</option>
                         <option value="staff">Staff</option>
                         <option value="cleaning">Cleaning</option>
-                        <option value="other">Other</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="management">Management</option>
                     </select>
                 </div>
             
