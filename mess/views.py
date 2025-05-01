@@ -1,3 +1,8 @@
+from mess.models import MessBill
+from mess.models import MonthlyMessSummary
+from users.models import StudentInfo
+from complaints.models import Complaint
+from users.models import ArchivedMessBill
 from django.shortcuts import render , redirect 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
@@ -5,10 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from mess.models import MessBill
-from mess.models import MonthlyMessSummary
-from users.models import StudentInfo
-from complaints.models import Complaint
 from django.urls import reverse
 import calendar
 from django.core.exceptions import MultipleObjectsReturned
@@ -30,12 +31,12 @@ def messbill(request, month):
     print("Month from URL:", month)
 
     try:
-        month_number = list(calendar.month_name).index(month)  # April => 4
+        month_number = list(calendar.month_name).index(month)  
     except ValueError:
         return HttpResponse("Invalid month")
 
     current_year = datetime.now().year
-    formatted_month = f"{current_year}-{month_number:02d}"  # 2025-04
+    formatted_month = f"{current_year}-{month_number:02d}"  
 
     mess_bill = MessBill.objects.filter(user=request.user, month_year=formatted_month).first()
 
@@ -107,8 +108,7 @@ def complain(request):
         print("Extracted description:", description)
        
 
-        description = request.POST.get("description")
-        print("Extracted description:", description)
+        
         if not description:
             messages.error(request, "Complaint description cannot be empty.")
             return redirect("complain")
@@ -119,7 +119,7 @@ def complain(request):
             category=category,
             description=description 
         )
-        messages.success(request, "Your complaint has been submitted successfully.")
+       
         return redirect("complain")
 
     print("Received form data:", request.POST)
@@ -365,7 +365,11 @@ def monthly_bill(request, month):
 
     current_year = datetime.now().year
     formatted_month_year = f"{current_year}-{month_number:02d}"
-    bills = MessBill.objects.filter(month_year=formatted_month_year)
+    excluded_users = User.objects.exclude(username__in=["warden", "matron", "admin"])
+    bills = MessBill.objects.filter(
+    user__in=excluded_users,
+    month_year=formatted_month_year
+        ).order_by("-year", "name")
 
     return render(request, 'monthly_bill.html', {'bills': bills}, )
 
@@ -401,3 +405,46 @@ def view_student_list(request):
 def student_detail(request, student_id):
     student = get_object_or_404(StudentInfo, id=student_id)
     return render(request, 'student_detail.html', {'student': student})
+
+
+
+
+def archive_old_record():
+    today = datetime.today()
+    
+    # Run only on December 31st
+    if today.month == 12 and today.day == 31:
+        old_records = StudentInfo.objects.filter(year=today.year)
+        archived_records = []
+
+        for record in old_records:
+            archived_records.append(ArchivedMessBill(
+                user=record.user,
+                name=record.name,
+                sch_no=record.sch_no,
+                branch=record.branch,
+                year=record.year,
+                category=record.category,
+                dob=record.dob,
+                blood_group=record.blood_group,
+                email=record.email,
+                address=record.address,
+                phone=record.phone,
+                g_no=record.g_no,
+                g_name=record.g_name,
+                g_email=record.g_email,
+                g_occupation=record.g_occupation,
+                g_address=record.g_address,
+                e_no=record.e_no,
+                l_name=record.l_name,
+                l_address=record.l_address,
+                l_no=record.l_no,
+                disease=record.disease,
+            ))
+
+        ArchivedMessBill.objects.bulk_create(archived_records)
+
+        
+        old_records.delete()
+    else:
+        print("Not the end of the year. Skipping archival.")
