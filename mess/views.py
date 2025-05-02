@@ -341,13 +341,23 @@ def viewMessBill(request):
     return render(request, 'viewMessBill.html')
 
 
-def viewRecords(request):
-    return render(request, 'viewRecords.html')
+def viewYearRecords(request):
+    years = ArchivedMessBill.objects.values_list('year', flat=True).distinct()
+    return render(request, 'viewRecords.html',{'record':years})
+
+def records_by_year(request, year):
+    students = ArchivedMessBill.objects.filter(year=year)
+    print("Fetched students for year", year, ":", students)
+    return render(request, 'records_by_year.html', {'students': students, 'year': year})
+    
 
 
 def viewStudentInfo(request):
     return render(request, 'viewStudentInfo.html')
 
+def view_student_detail(request, pk):
+    student = get_object_or_404(ArchivedMessBill, pk=pk)
+    return render(request, 'student_detail.html', {'student': student})
 
 def viewComplaints(request):
     return render(request, 'viewComplaints.html')
