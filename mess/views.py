@@ -164,6 +164,7 @@ def calMessBill(request):
             #calculating mess bill 
             sum = int(number_of_girls * constant_charge)
             per_day_charge = float( (amount_spend - sum) / t_days)
+            print("per day charge is: ", per_day_charge )
 
     month = datetime.now().strftime("%Y-%m")
     try:
