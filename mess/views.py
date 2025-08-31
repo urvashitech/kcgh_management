@@ -20,10 +20,14 @@ from complaints.models import Complaint
 from django.utils import timezone
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-
-
 from django.db.models import Sum
-# Create your views here.
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+import calendar
+from datetime import datetime
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -353,54 +357,140 @@ def viewComplaints(request):
     return render(request, 'viewComplaints.html')
 
 
-def monthly_bill(request):
-    return render(request, 'monthly_bill.html')
-
-
 def editMessBill(request):
     return render(request, 'messBillForm.html')
 
 
-def monthly_bill(request, month):
+def download_bill_pdf(request, month):
     month = month.capitalize()
     month_number = list(calendar.month_name).index(month) if month in calendar.month_name else None
 
     if not month_number:
-        return render(request, 'monthly_bill.html', {'bills': []})
+        return HttpResponse("Invalid month")
+
+    current_year = datetime.now().year
+    formatted_month_year = f"{current_year}-{month_number:02d}"
+
+    excluded_users = User.objects.exclude(username__in=["warden", "matron", "admin"])
+    bills = MessBill.objects.filter(
+        user__in=excluded_users,
+        month_year=formatted_month_year
+    ).order_by("user__username")
+
+    # Response setup
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="MessBill_{month}_{current_year}.pdf"'
+
+    # PDF setup
+    doc = SimpleDocTemplate(response, pagesize=A4)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # Title
+    title = Paragraph(f"<b>Mess Bill - {month} {current_year}</b>", styles["Title"])
+    elements.append(title)
+    elements.append(Spacer(1, 12))
+
+    # Table Data (Header + Rows)
+    data = [["S.No", "Name", "Scholar No.", "Category", "Branch", "Year", "No. of Days", "Total Amount", "Dues"]]
+
+    total_amount = 0
+    total_dues = 0
+
+    for idx, bill in enumerate(bills, start=1):
+        data.append([
+            idx,
+            bill.name,
+            bill.sch_no,
+            bill.category,
+            bill.branch,
+            bill.display_year,
+            bill.number_of_days,
+            bill.total_amount,
+            bill.dues,
+        ])
+        total_amount += bill.total_amount
+        total_dues += bill.dues
+
+    # Add Summary Row
+    data.append([
+        "", "", "", "", "", "", "Total",
+        total_amount,
+        total_dues
+    ])
+
+    # Create Table
+    table = Table(data, colWidths=[30, 100, 70, 70, 70, 50, 70, 80, 60])
+    table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.blue),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, 0), 10),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("BACKGROUND", (0, 1), (-1, -2), colors.beige),
+        ("GRID", (0, 0), (-1, -1), 1, colors.black),
+
+        # Highlight Total Row
+        ("BACKGROUND", (0, -1), (-1, -1), colors.lightgrey),
+        ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),
+    ]))
+
+    elements.append(table)
+
+    # Build PDF
+    doc.build(elements)
+    return response
+
+
+
+def monthly_bill(request, month):
+    month = month.strip().capitalize()
+    month_number = list(calendar.month_name).index(month) if month in calendar.month_name else None
+
+    if not month_number:
+        return render(request, 'monthly_bill.html', {'bills': [], 'month': month})
 
     current_year = datetime.now().year
     formatted_month_year = f"{current_year}-{month_number:02d}"
     excluded_users = User.objects.exclude(username__in=["warden", "matron", "admin"])
     bills = MessBill.objects.filter(
-    user__in=excluded_users,
-    month_year=formatted_month_year
-        ).order_by("-year", "name")
+        user__in=excluded_users,
+        month_year=formatted_month_year
+    ).order_by("name")
 
-    return render(request, 'monthly_bill.html', {'bills': bills}, )
+    display_month_year = f"{month} {current_year}"
+    return render(
+        request,
+        'monthly_bill.html',
+        {
+            'bills': bills,
+            'month': display_month_year,   # for header
+            'month_name': month            # for URLs (PDF export)
+        }
+    )
+
 
 def monthWiseBill(request):
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-              'August', 'September', 'October', 'November', 'December']
-    
+    months = list(calendar.month_name)[1:]  # ['January', ..., 'December']
+
     if request.method == "POST":
         selected_month = request.POST.get("month")
         if selected_month:
-            return redirect(reverse('messbill', kwargs={'month': selected_month}))
-    
+            return redirect(reverse('monthly_bill', kwargs={'month': selected_month.strip()}))
+
     return render(request, 'monthWiseBill.html', {'months': months})
 
+
 def viewMessBill(request):
-    months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ]
-    
+    months = list(calendar.month_name)[1:]
+
     if request.method == "POST":
         selected_month = request.POST.get('month')
         if selected_month:
-            url = reverse('monthly_bill', kwargs={'month': selected_month})
+            url = reverse('monthly_bill', kwargs={'month': selected_month.strip()})
             return redirect(url)
-    
+
     return render(request, 'viewMessBill.html', {'months': months})
 
 def view_student_list(request):

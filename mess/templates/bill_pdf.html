@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+        thead {
+            background-color: #d1fae5;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Mess Bill - {{ month }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Scholar No.</th>
+                <th>Category</th>
+                <th>Branch</th>
+                <th>Year</th>
+                <th>No. of Days</th>
+                <th>Total Amount</th>
+                <th>Dues</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.name }}</td>
+                <td>{{ bill.sch_no }}</td>
+                <td>{{ bill.category }}</td>
+                <td>{{ bill.branch }}</td>
+                <td>{{ bill.display_year }}</td>
+                <td>{{ bill.number_of_days }}</td>
+                <td>{{ bill.total_amount }}</td>
+                <td>{{ bill.dues }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

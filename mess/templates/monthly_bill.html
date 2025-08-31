@@ -21,55 +21,37 @@
     style="background: #f1e9d2; color: black !important; ">
     
     <style>
-        .table-container {
-            margin: 25px auto;
-            width: 100%;
-            max-width: 1000px;
-            background-color: #1f2937; /* dark background for header container */
-            padding: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-            color: white;
-        }
-
-        .table-container h2 {
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
             color: black;
-            overflow: hidden;
-        }
-
-        thead {
-            background-color: #111827;
-            color: white;
+            font-size: 14px;
         }
 
         th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+            border: 1px solid #000; /* solid black border */
+            padding: 8px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #6387dfff; /* light green header */
+            font-weight: bold;
         }
 
         tbody tr:nth-child(even) {
-            background-color: #f3f4f6;
-        }
-
-        tbody tr:hover {
-            background-color: #e5e7eb;
+            background-color: #f9fafb; /* light gray for alternate rows */
         }
     </style>
 
+
     <div class="table-container">
-        <h2>Mess Bill Information</h2>
+        
 
         {% if bills %}
+        <h2 style="text-align:center;">Mess Bill - {{ month }}</h2>
+
         <table>
             <thead>
                 <tr>
@@ -103,6 +85,7 @@
         {% endif %}
         <div style="text-align: center; padding: 20px;">
             <a href="{% url 'viewMessBill' %}" class="btn btn-primary mb-3">Back</a>
+            <a href="{% url 'download_bill_pdf' month_name %}" class="btn btn-danger mb-3">Download as PDF</a>
         </div>
     </div>
 </div>
