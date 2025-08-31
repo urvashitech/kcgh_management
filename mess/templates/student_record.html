@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}<title>Student Records by Year</title>{% endblock %}
+{% block title %}<title>Student Profiles</title>{% endblock %}
 {% load static %}
 {% block body %}
 
@@ -36,32 +36,28 @@
         text-decoration: underline;
     }
 </style>
-
 <div class="d-flex justify-content-center align-items-start" style="height: 80vh; margin-top: 80px;">
     <div class="container text-white p-5 rounded"
-         style="background: #f1e9d2; color: black !important; max-width: 1000px;">
+        style="background: #f1e9d2; color: black !important; max-width: 1000px;">
 
-        <h1 class="text-center">Select Year to View Records</h1>
-
-        <div class="student-list">
-            {% if record %}
-                <ul>
-                    {% for year in record %}
-                        <li>
-                            <a href="{% url 'records_by_year' year %}">{{ year }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No years available.</p>
-            {% endif %}
-        </div>
-
-        <div style="text-align: center; padding: 20px;">
-            <a href="{% url 'view_info' %}" class="btn btn-primary mb-3">Back</a>
-        </div>
-
+    <div class="container text-white  d-flex flex-column justify-content-center align-items-center"
+    style="background: #f1e9d2; color: black !important; ">
+    <h1><h1>STUDENT RECORD - {{ year }}</h1></h1>
+    <div class="student-list">
+        {% if records %}
+            <ul>
+                {% for record in records %}
+                    <li>
+                        <a href="{% url 'student_record'  %}">{{ record.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No students found.</p>
+        {% endif %}
+    </div>
+    <div style="text-align: center; padding: 20px;">
+        <a href="{% url 'view_info' %}" class="btn btn-primary mb-3">Back</a>
     </div>
 </div>
-
 {% endblock %}

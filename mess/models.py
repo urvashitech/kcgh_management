@@ -1,9 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Create your models here.
+
+
+def get_previous_month_year():
+    today = datetime.today()
+    first_day_this_month = today.replace(day=1)
+    last_day_previous_month = first_day_this_month - timedelta(days=1)
+    return last_day_previous_month.strftime("%Y-%m")
 class MessBill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50)
@@ -15,12 +22,12 @@ class MessBill(models.Model):
     total_amount = models.IntegerField()
 
     dues = models.IntegerField(default= 0)
-    month_year = models.CharField(max_length=7, default=datetime.now().strftime("%Y-%m"))
+    month_year = models.CharField(max_length=7, default=get_previous_month_year)
 
     def save(self, *args, **kwargs):
 
         if not self.month_year:
-            self.month_year = datetime.now().strftime("%Y-%m")
+            self.month_year = get_previous_month_year()
     
         if MessBill.objects.filter(sch_no=self.sch_no, month_year=self.month_year).exists() and not self.pk:
             raise ValidationError("A MessBill for this sch_no already exists for this month.")
