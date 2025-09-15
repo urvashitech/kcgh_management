@@ -51,7 +51,7 @@ def messbill(request, month):
 
     print("Filtered mess bill:", mess_bill)
 
-    return render(request, "messbill.html", {
+    return render(request, "messBill.html", {
         'mess_bill': mess_bill,
         'user': request.user,
         'month': month,
@@ -93,6 +93,36 @@ def personalInfo(request):
         return render(request,"404.html")  
 
     return render(request, "personalInfo.html", {"user1": user_info, 'user': request.user})  
+
+
+@login_required
+def my_monthly_bill(request, month):
+    # Convert month name to YYYY-MM format
+
+    try:
+        month_number = list(calendar.month_name).index(month.capitalize())
+    except ValueError:
+        messages.error(request, "Invalid month selected.")
+        return redirect("viewMessBill")
+
+    current_year = datetime.now().year
+    formatted_month = f"{current_year}-{month_number:02d}"
+
+    # Only fetch the bill for the logged-in user
+    mess_bill = MessBill.objects.filter(user=request.user, month_year=formatted_month).first()
+
+    if not mess_bill:
+        messages.error(request, "No bill found for this month.")
+        return redirect("viewMessBill")
+
+    # 'bills' is used in the template to show/hide bill info
+    return render(request, "messBill.html", {
+        "mess_bill": mess_bill,
+        "month": month,
+        "user": request.user,
+        "bills": True
+    })
+
 
 
 def staffInfo(request):
@@ -347,8 +377,7 @@ def view_info(request):
     return render(request, 'viewInfo.html')
 
 
-def viewMessBill(request):
-    return render(request, 'viewMessBill.html')
+
 
 
 def viewYearRecords(request):
@@ -497,17 +526,24 @@ def monthWiseBill(request):
 
     return render(request, 'monthWiseBill.html', {'months': months})
 
-
+@login_required
 def viewMessBill(request):
     months = list(calendar.month_name)[1:]
 
     if request.method == "POST":
-        selected_month = request.POST.get('month')
+        selected_month = request.POST.get("month")
         if selected_month:
-            url = reverse('monthly_bill', kwargs={'month': selected_month.strip()})
-            return redirect(url)
+            selected_month = selected_month.strip()
 
-    return render(request, 'viewMessBill.html', {'months': months})
+            # Students → their own bill
+            if request.user.is_staff or request.user.username in ["warden", "matron", "admin"]:
+                return redirect("monthly_bill", month=selected_month)
+
+            # Otherwise student
+            return redirect("my_monthly_bill", month=selected_month)
+
+    return render(request, "viewMessBill.html", {"months": months})
+
 
 def view_student_list(request):
     students = StudentInfo.objects.all()
