@@ -10,6 +10,7 @@ urlpatterns = [
     path('handleLogOut/', views.handleLogOut, name='handleLogOut'),   
     path("personalInfo", views.personalInfo, name="personalInfo"),
     path("staffInfo", views.staffInfo, name="staffInfo"),
+    path("rules", views.rules, name="rules"),
     path("studentInfo", views.studentInfo, name="studentInfo"),
     path("complain", views.complain, name="complain"), 
     path("manage_db",views.manage_db, name="manage_db"),

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %} <title>Rules</title> {% endblock %}
+{% load static%}
+{% block body %}
+
+    {% include "components/navbar.html" %}
+
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/hostelBg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+    
+    <a href="{% url 'login' %}"></a>
+
+    <div class="row">
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+    
+                    <div class="modal-body">
+                        <!-- Login Form -->
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+    
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+    
+                            <button type="submit" class="btn btn-dark">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container mt-5">
+        <h2 class="text-center mb-0 bg-dark text-white p-3 rounded">Hostel Rules</h2>
+    
+        <table class="table table-bordered" class="table table-dark table-hover" >
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 10%;">S.No.</th>
+                    <th>Rules</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>1.</td> 
+                    <td>All hostellers must compulsorily join the mess operated in their respective hostels. Cooking meals in rooms or arranging food from outside is strictly prohibited.</td>
+                </tr>
+
+                <tr>
+                    <td>2.</td> 
+                    <td> The mess is managed by the hostellers themselves under the general supervision of the Warden, through a Mess Secretary appointed from among the hostellers by general consensus. The Mess Secretary will not be paid any remuneration or allowance for this work.</td>
+                </tr>
+
+                <tr>
+                    <td>3.</td> 
+                    <td> Hostellers must deposit mess security and mess advance amounts as prescribed by the Institute administration and pay their mess bills regularly by the 15th of every month. The mess security or advance serves as a buffer to cover shortages in case of delays or defaults in payment. If a hosteller fails to clear mess dues by the last day of the month, stricter action may be taken.</td>
+                </tr>
+
+                <tr>
+                    <td>4.</td> 
+                    <td>Constant charges of Rs. 800 with minimum 10 days will be applicable in mess bill for complete month. Constant charges will be lesser accordingly for lesser days.</td>
+                </tr>
+
+                <tr>
+                    <td>5.</td> 
+                    <td> If a hosteller suffers from any serious illness, they may be allowed mess exemption for certain days, subject to payment of Rs. 800 constant charges and with prior permission of of the Warden along with proper documentation.</td>
+                </tr>
+
+                <tr>
+                    <td>6.</td> 
+                    <td> In case of delayed mess bill calculation, the Warden will fix an ad hoc amount based on the average monthly bill. Dues must then be paid by the 15t of the month, calculated on this basis.</td>
+                </tr>
+
+                <tr>
+                    <td>7.</td> 
+                    <td> Guest charges of Rs. 200 per day will be applicable, if a parent or relative of a hosteller stays in the hostel. These charges will be added to the hosteller's mess bill.</td>
+                </tr>
+
+                <tr>
+                    <td>8.</td> 
+                    <td>  Mess security will not be adjusted against mess dues. It will only be refunded after the hosteller vacates the hostel.</td>
+                </tr>
+
+                <tr>
+                    <td>9.</td> 
+                    <td> Meals must be taken in the mess. In case of illness, meals may be served in the hosteller's room in their own utensils, with the permission of the Warden.</td>
+                </tr>
+
+                <tr>
+                    <td>10.</td> 
+                    <td><p>A hosteller is expected to take meals on all days of the month. However, meal cancellations may be permitted as per rules framed by the mess members and Warden. Mess charges are divided into two categories - 
+                        <p>1. Fixed Charges, and </p>
+                        <p>2. Running Charges</p> 
+                    <p>to safeguard the interests of those who take meals regularly throughout the month. All hostellers must pay the total fixed charges.Hostellers wishing to skip a meal must give at least 12 hours' prior notice. In such cases, exemption will be granted only for the running charges of the skipped meals.</p></td>
+                </tr>
+
+
+                
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

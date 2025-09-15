@@ -100,6 +100,11 @@ def staffInfo(request):
         logout(request)
     return render(request, "staffInfo.html")
 
+def rules(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return render(request, "rules.html")
+
 
 def studentInfo(request):
     return render(request, "studentProf.html")
@@ -433,17 +438,17 @@ def download_bill_pdf(request, month):
     # Create Table
     table = Table(data, colWidths=[30, 100, 70, 70, 70, 50, 70, 80, 60])
     table.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), colors.blue),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.white),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
         ("ALIGN", (0, 0), (-1, -1), "CENTER"),
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
         ("FONTSIZE", (0, 0), (-1, 0), 10),
         ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
-        ("BACKGROUND", (0, 1), (-1, -2), colors.beige),
+        ("BACKGROUND", (0, 1), (-1, -2), colors.white),
         ("GRID", (0, 0), (-1, -1), 1, colors.black),
 
         # Highlight Total Row
-        ("BACKGROUND", (0, -1), (-1, -1), colors.lightgrey),
+        ("BACKGROUND", (0, -1), (-1, -1), colors.white),
         ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),
     ]))
 

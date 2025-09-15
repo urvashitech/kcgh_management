@@ -17,6 +17,9 @@
 
         <a href="{% url 'staffInfo' %}" class="btn {% if request.resolver_match.url_name == 'staffInfo' %}btn-success{% else %}btn-outline-success{% endif %}">Staff</a>
 
+        <a href="{% url 'rules' %}" class="btn {% if request.resolver_match.url_name == 'rules' %}btn-success{% else %}btn-outline-success{% endif %}">Rules</a>
+
+
         {% if user.is_authenticated %}
           <a href="{% url 'monthWiseBill' %}" class="btn {% if request.resolver_match.url_name == 'monthWiseBill' %}btn-success{% else %}btn-outline-success{% endif %}">Mess Bill</a>
 
